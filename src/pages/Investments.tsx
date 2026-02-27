@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, ArrowUpRight, ArrowDownRight, Briefcase, PieChart as PieIcon, Activity } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { TrendingUp, ArrowUpRight, ArrowDownRight, Briefcase, PieChart as PieIcon, Activity, ArrowLeft } from 'lucide-react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import DownloadButton from '../components/documents/DownloadButton';
 
 const PERFORMANCE_DATA = [
     { name: 'Mon', value: 45000 },
@@ -27,6 +31,103 @@ const ASSETS = [
 ];
 
 const Investments = () => {
+    const navigate = useNavigate();
+
+    const handleDownloadPDF = async () => {
+        // Ensure we don't block the UI thread completely, giving the button time to spin
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const doc = new jsPDF();
+
+        // --- Branding / Header ---
+        // Instead of slate-900 background, add the newly generated geometric image as full-bleed background
+        const imgUrl = '/pdf-bg.png';
+        const img = new Image();
+        img.src = imgUrl;
+
+        // Wait for image to load to guarantee it draws on the PDF canvas
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+        });
+
+        // Add the image filling a standard A4 page (210 x 297 mm)
+        doc.addImage(img, 'PNG', 0, 0, 210, 297);
+
+        doc.setTextColor(15, 23, 42); // slate-900 (Dark color for light background)
+        doc.setFontSize(24);
+        doc.setFont("helvetica", "bold");
+        doc.text("Finova Intelligence", 14, 25);
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        doc.text(`Investment Report \u2022 ${dateStr}`, 14, 32);
+
+        // --- Summary Metric ---
+        doc.setTextColor(15, 23, 42); // slate-900
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("Portfolio Performance overview", 14, 55);
+
+        doc.setFontSize(32);
+        doc.text("$54,200.00", 14, 68);
+
+        doc.setFontSize(12);
+        doc.setTextColor(16, 185, 129); // emerald-500
+        doc.text("+12.5% (This Week)", 75, 68);
+
+        // --- Active Holdings Table ---
+        doc.setTextColor(15, 23, 42);
+        doc.setFontSize(14);
+        doc.text("Active Holdings Breakdown", 14, 85);
+
+        const tableBody = ASSETS.map(asset => [
+            `${asset.name} (${asset.symbol})`,
+            asset.type,
+            `$${asset.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+            asset.change
+        ]);
+
+        autoTable(doc, {
+            startY: 90,
+            head: [['Asset', 'Type', 'Current Value', '24h Change']],
+            body: tableBody,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [15, 23, 42], // slate-900 
+                textColor: [255, 255, 255],
+                fontStyle: 'bold',
+                halign: 'left'
+            },
+            columnStyles: {
+                0: { fontStyle: 'bold' },
+                2: { halign: 'right' },
+                3: { halign: 'right' },
+            },
+            alternateRowStyles: {
+                fillColor: [248, 250, 252] // slate-50
+            },
+            styles: {
+                font: 'helvetica',
+                fontSize: 10,
+                cellPadding: 6,
+            }
+        });
+
+        // --- Footer ---
+        const pageCount = (doc as any).internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setTextColor(148, 163, 184); // slate-400
+            doc.text(`Finova Document Intelligence \u00A9 2026`, 14, 290);
+            doc.text(`Page ${i} of ${pageCount}`, 196, 290, { align: 'right' });
+        }
+
+        doc.save("finova-investment-report.pdf");
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -36,6 +137,12 @@ const Investments = () => {
             {/* Header section */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="flex items-center gap-2 text-text-secondary hover:text-[var(--text-primary)] transition-colors mb-4 text-sm font-bold"
+                    >
+                        <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                    </button>
                     <div className="flex items-center gap-2 mb-2">
                         <span className="px-2 py-0.5 rounded-md bg-primary text-white text-[10px] font-black uppercase tracking-widest">PRO Active</span>
                         <span className="text-text-secondary text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
@@ -46,10 +153,16 @@ const Investments = () => {
                     <p className="text-text-secondary font-medium mt-1">Manage your portfolio with elite precision and real-time insights.</p>
                 </div>
 
-                <div className="flex bg-[var(--surface-muted)] p-1 rounded-2xl border-2 border-[var(--border)]">
-                    <button className="px-6 py-2.5 bg-[var(--text-primary)] rounded-xl shadow-premium text-sm font-bold text-[var(--background)] border-2 border-[var(--text-primary)]">Portfolio</button>
-                    <button className="px-6 py-2.5 text-sm font-bold text-text-secondary hover:text-[var(--text-primary)] transition-colors">Markets</button>
-                    <button className="px-6 py-2.5 text-sm font-bold text-text-secondary hover:text-[var(--text-primary)] transition-colors">Analysis</button>
+                <div className="flex flex-col sm:flex-row items-end gap-4">
+                    <div className="flex bg-[var(--surface-muted)] p-1 rounded-2xl border-2 border-[var(--border)] shrink-0 h-[48px]">
+                        <button className="px-6 h-full bg-[var(--text-primary)] rounded-xl shadow-premium text-sm font-bold text-[var(--background)] border-2 border-[var(--text-primary)]">Portfolio</button>
+                        <button className="px-6 h-full text-sm font-bold text-text-secondary hover:text-[var(--text-primary)] transition-colors">Markets</button>
+                        <button className="px-6 h-full text-sm font-bold text-text-secondary hover:text-[var(--text-primary)] transition-colors">Analysis</button>
+                    </div>
+
+                    <div className="shrink-0 h-[48px] flex items-stretch">
+                        <DownloadButton onClick={handleDownloadPDF} label="Export PDF" />
+                    </div>
                 </div>
             </div>
 
