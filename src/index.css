@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --background: #f9fafb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --surface: #ffffff;
+    --surface-muted: #f3f4f6;
+    --border: #e5e7eb;
+    --border-subtle: #f3f4f6;
+    /* High-contrast black/slate-900 */
+
+    /* Figma Precision Elevation L0-L4 */
+    --shadow-l0: 0 0 0 0 rgba(0, 0, 0, 0);
+    --shadow-l1: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    --shadow-l2: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --shadow-l3: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+    --shadow-l4: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  }
+
+  .dark {
+    --primary: #3B82F6;
+    --primary-hover: #2563EB;
+    --background: #121212;
+    --surface: #1E1E1E;
+    --surface-muted: #2C2C2C;
+    --text-primary: #F9FAFB;
+    --text-secondary: #A1A1AA;
+    --border: #333333;
+    --border-subtle: #27272A;
+  }
+
+  ::selection {
+    background-color: #dbeafe;
+    /* blue-100 */
+    color: #1e3a8a;
+    /* blue-900 */
+  }
+
+  body {
+    @apply bg-[var(--background)] text-[var(--text-primary)] antialiased overflow-x-hidden;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+
+  /* MacOS Glassmorphism Component Refinements */
+  .card-premium {
+    @apply bg-[var(--surface)] border border-[var(--border)] rounded-[18px] transition-all duration-300 hover:-translate-y-1 relative overflow-hidden backdrop-blur-[20px];
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .dark .card-premium {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Soft Top Highlight for Glass */
+  .card-premium::before {
+    content: '';
+    @apply absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .card-premium:hover::before {
+    @apply opacity-100;
+  }
+
+  .card-premium:hover {
+    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .border-premium {
+    border: 1px solid var(--border);
+  }
+
+  .btn-ultra {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-ultra:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary-ultra {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary-ultra:hover {
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.25), 0 4px 6px -4px rgba(59, 130, 246, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary-ultra {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    backdrop-filter: blur(12px);
+  }
+
+  .btn-secondary-ultra:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Micro-Motion Utilities */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .magnetic-area {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+/* Chrome-style scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #cbd5e1;
+}
