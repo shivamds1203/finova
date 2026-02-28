@@ -46,7 +46,7 @@ export const CurrencySelector = () => {
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute right-0 mt-2 w-56 bg-[var(--surface)] backdrop-blur-xl border border-[var(--border)] rounded-2xl shadow-premium z-50 overflow-hidden"
+                        className="absolute left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-0 mt-2 w-56 bg-[var(--surface)] backdrop-blur-xl border border-[var(--border)] rounded-2xl shadow-premium z-50 overflow-hidden"
                     >
                         <div className="p-2 space-y-1">
                             {CURRENCIES.map((c) => (
