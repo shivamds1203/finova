@@ -139,7 +139,11 @@
   }
 
   .glass-card {
-    @apply bg-[var(--surface)]/80 border border-[var(--border)] rounded-2xl backdrop-blur-xl;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
 
