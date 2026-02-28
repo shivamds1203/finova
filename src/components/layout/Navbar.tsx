@@ -26,10 +26,7 @@ const Navbar = () => {
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                    <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                        <div className="w-4 h-4 bg-[var(--surface)] rounded-sm rotate-45" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-text-primary">Finova</span>
+                    <img src="/finova.jpeg" alt="Finova" className="w-8 h-8 rounded-lg object-cover" />
                 </div>
 
                 {/* Links */}
