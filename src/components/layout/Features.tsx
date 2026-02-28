@@ -31,7 +31,7 @@ const FEATURE_DATA = [
 
 const FeatureCard = ({ feature, index }: { feature: any, index: number }) => {
     const ref = useRef(null);
-    const isInView = useInView(ref, { margin: "-100px" });
+    const isInView = useInView(ref, { margin: "-50px" });
 
     return (
         <motion.div

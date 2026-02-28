@@ -178,7 +178,7 @@ const Auth = ({ initialMode = 'login' }: { initialMode?: 'login' | 'signup' }) =
             {/* Right Side: 3D Flip Card Area */}
             <div className="flex-1 flex items-center justify-center p-6 relative z-10 w-full perspective-container">
                 {/* Mobile Lamp */}
-                <div className="lg:hidden absolute top-4 left-1/2 -translate-x-1/2 z-20 scale-75 md:scale-90 pointer-events-auto">
+                <div className="lg:hidden absolute top-0 left-1/2 -translate-x-1/2 z-20 scale-75 md:scale-90 pointer-events-auto">
                     <LampToggle isOn={isOn} onToggle={() => setIsOn(!isOn)} />
                 </div>
 
