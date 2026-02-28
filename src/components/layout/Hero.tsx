@@ -9,7 +9,7 @@ const Hero = () => {
     return (
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden pt-20">
             {/* Background Ambient Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center gap-16">
                 {/* Left Content */}
@@ -19,7 +19,7 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold mb-6">
+                        <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-6">
                             V1.0 — The Future of Fintech
                         </span>
                         <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-text-primary mb-6">
@@ -71,17 +71,17 @@ const Hero = () => {
                                 {/* Mockup Content */}
                                 <div className="p-6 space-y-6">
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="h-24 rounded-xl bg-blue-50/50 border border-blue-100 p-4">
-                                            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center mb-2">
+                                        <div className="h-24 rounded-xl bg-primary/5 border border-primary/10 p-4">
+                                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                                                 <BarChart3 className="w-4 h-4 text-primary" />
                                             </div>
-                                            <div className="h-2 w-12 bg-blue-200 rounded-full" />
+                                            <div className="h-2 w-12 bg-primary/20 rounded-full" />
                                         </div>
-                                        <div className="h-24 rounded-xl bg-green-50/50 border border-green-100 p-4">
-                                            <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center mb-2">
-                                                <PieChart className="w-4 h-4 text-success" />
+                                        <div className="h-24 rounded-xl bg-emerald-500/5 border border-emerald-500/10 p-4">
+                                            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-2">
+                                                <PieChart className="w-4 h-4 text-emerald-500" />
                                             </div>
-                                            <div className="h-2 w-16 bg-green-200 rounded-full" />
+                                            <div className="h-2 w-16 bg-emerald-500/20 rounded-full" />
                                         </div>
                                     </div>
                                     <div className="h-32 w-full bg-[var(--surface-muted)] rounded-xl border border-[var(--border-subtle)] overflow-hidden relative">

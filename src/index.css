@@ -11,6 +11,7 @@
     --text-secondary: #6b7280;
     --surface: #ffffff;
     --surface-muted: #f3f4f6;
+    --surface-muted-active: #e9eaec;
     --border: #e5e7eb;
     --border-subtle: #f3f4f6;
     /* High-contrast black/slate-900 */
@@ -26,13 +27,14 @@
   .dark {
     --primary: #3B82F6;
     --primary-hover: #2563EB;
-    --background: #121212;
-    --surface: #1E1E1E;
-    --surface-muted: #2C2C2C;
+    --background: #0a0a0a;
+    --surface: #141414;
+    --surface-muted: #1f1f1f;
+    --surface-muted-active: #2a2a2a;
     --text-primary: #F9FAFB;
-    --text-secondary: #A1A1AA;
-    --border: #333333;
-    --border-subtle: #27272A;
+    --text-secondary: #9ca3af;
+    --border: #2a2a2a;
+    --border-subtle: #1f1f1f;
   }
 
   ::selection {
@@ -136,14 +138,23 @@
     }
   }
 
-  .magnetic-area {
-    transition: transform 0.3s ease-out;
+  .glass-card {
+    @apply bg-[var(--surface)]/80 border border-[var(--border)] rounded-2xl backdrop-blur-xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-xl font-bold transition-all hover:opacity-90 hover:-translate-y-0.5 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply border-2 border-[var(--border)] text-[var(--text-primary)] px-6 py-3 rounded-xl font-bold transition-all hover:bg-[var(--surface-muted)] active:scale-[0.98];
   }
 }
 
 /* Chrome-style scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -151,11 +162,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #e2e8f0;
+  background-color: var(--border);
   border-radius: 9999px;
   transition: background-color 0.2s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #cbd5e1;
+  background-color: var(--text-secondary);
 }
