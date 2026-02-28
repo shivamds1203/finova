@@ -103,7 +103,7 @@ const Hero = () => {
                         <motion.div
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -top-6 -right-6 glass-card p-4 flex items-center gap-3 shadow-2xl"
+                            className="absolute -top-4 -right-2 md:-top-6 md:-right-6 glass-card p-3 md:p-4 flex items-center gap-2 md:gap-3 shadow-2xl scale-75 md:scale-100 origin-top-right"
                         >
                             <div className="p-2 rounded-full bg-green-500">
                                 <ShieldCheck className="w-4 h-4 text-white" />
