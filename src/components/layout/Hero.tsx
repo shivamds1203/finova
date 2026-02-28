@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, ChevronRight, BarChart3, PieChart, ShieldCheck, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 
 const Hero = () => {
     const navigate = useNavigate();
@@ -30,10 +31,18 @@ const Hero = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                            <button onClick={() => navigate('/signup')} className="btn-primary flex items-center gap-2 group">
-                                Get Started Free
-                                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                            </button>
+                            <SignedOut>
+                                <button onClick={() => navigate('/signup')} className="btn-primary flex items-center gap-2 group">
+                                    Get Started Free
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                </button>
+                            </SignedOut>
+                            <SignedIn>
+                                <button onClick={() => navigate('/dashboard')} className="btn-primary flex items-center gap-2 group">
+                                    Go to Dashboard
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                </button>
+                            </SignedIn>
                             <button className="btn-outline flex items-center gap-2">
                                 Watch Demo
                                 <ChevronRight className="w-4 h-4" />

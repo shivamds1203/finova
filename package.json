@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.61.3",
     "axios": "^1.6.7",
     "canvas-confetti": "^1.9.4",
     "chart.js": "^4.4.2",

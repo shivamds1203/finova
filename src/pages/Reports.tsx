@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
-import { Download, Filter, Search, ArrowUpRight, ArrowDownRight, FileText } from 'lucide-react';
+import { Download, Filter, Search, ArrowUpRight, ArrowDownRight, FileText, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useCurrency } from '../providers/CurrencyContext';
 
 const TRANSACTIONS = [
     { id: '1', date: '2026-02-27', description: 'Apple Store Purchase', category: 'Shopping', amount: -1299.00, status: 'Completed' },
@@ -11,14 +14,23 @@ const TRANSACTIONS = [
 ];
 
 const Reports = () => {
+    const navigate = useNavigate();
+    const { formatCurrency } = useCurrency();
+
     return (
         <div className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
+                    <button
+                        onClick={() => navigate('/dashboard')}
+                        className="flex items-center gap-2 text-text-secondary hover:text-[var(--text-primary)] transition-colors mb-4 text-sm font-bold"
+                    >
+                        <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                    </button>
                     <h1 className="text-3xl font-bold text-text-primary">Financial Reports</h1>
                     <p className="text-text-secondary mt-1">Analyze and export your transaction history.</p>
                 </div>
-                <button className="btn-primary py-2.5 flex items-center gap-2 text-sm">
+                <button onClick={() => toast.success('Downloading report...')} className="btn-primary py-2.5 flex items-center gap-2 text-sm">
                     <Download size={18} />
                     Export CSV
                 </button>
@@ -35,11 +47,11 @@ const Reports = () => {
                         />
                     </div>
                     <div className="flex items-center gap-2">
-                        <button className="btn-outline py-2 px-4 flex items-center gap-2 text-xs">
+                        <button onClick={() => toast('Category filter coming soon')} className="btn-outline py-2 px-4 flex items-center gap-2 text-xs">
                             <Filter size={14} />
                             Category
                         </button>
-                        <button className="btn-outline py-2 px-4 flex items-center gap-2 text-xs">
+                        <button onClick={() => toast('Status filter coming soon')} className="btn-outline py-2 px-4 flex items-center gap-2 text-xs">
                             Status
                         </button>
                     </div>
@@ -81,7 +93,7 @@ const Reports = () => {
                                     </td>
                                     <td className="px-8 py-5">
                                         <span className={`text-sm font-bold ${tx.amount > 0 ? 'text-green-600' : 'text-text-primary'}`}>
-                                            {tx.amount > 0 ? '+' : ''}${Math.abs(tx.amount).toLocaleString()}
+                                            {tx.amount > 0 ? '+' : ''}{formatCurrency(Math.abs(tx.amount))}
                                         </span>
                                     </td>
                                     <td className="px-8 py-5">
@@ -99,8 +111,8 @@ const Reports = () => {
                 <div className="p-6 border-t border-[var(--border-subtle)] bg-[var(--surface-muted)] flex items-center justify-between">
                     <span className="text-xs text-text-secondary font-medium">Showing 6 of 124 transactions</span>
                     <div className="flex items-center gap-2">
-                        <button className="btn-outline py-1.5 px-3 text-xs opacity-50 cursor-not-allowed">Previous</button>
-                        <button className="btn-outline py-1.5 px-3 text-xs">Next</button>
+                        <button onClick={() => toast('No previous records')} className="btn-outline py-1.5 px-3 text-xs opacity-50 cursor-not-allowed">Previous</button>
+                        <button onClick={() => toast('End of records')} className="btn-outline py-1.5 px-3 text-xs">Next</button>
                     </div>
                 </div>
             </div>

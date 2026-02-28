@@ -12,17 +12,23 @@ import {
     Bell,
     Search,
     Shield,
-    User
+    CreditCard,
+    User as UserIcon
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { SignedIn, UserButton, useUser, useClerk } from '@clerk/clerk-react';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { CurrencySelector } from '../common/CurrencySelector';
+import toast from 'react-hot-toast';
 
 const MENU_ITEMS = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: '/dashboard' },
-    { icon: <Wallet size={20} />, label: 'Expenses', path: '/dashboard/expenses' },
+    { icon: <Wallet size={20} />, label: 'Wallet', path: '/dashboard/wallet' },
+    { icon: <CreditCard size={20} />, label: 'Credit', path: '/dashboard/credit' },
     { icon: <TrendingUp size={20} />, label: 'Investments', path: '/dashboard/investments' },
     { icon: <BarChart3 size={20} />, label: 'Analytics', path: '/dashboard/analytics' },
+    { icon: <FileText size={20} />, label: 'Expenses', path: '/dashboard/expenses' },
     { icon: <FileText size={20} />, label: 'Reports', path: '/dashboard/reports' },
     { icon: <FileText size={20} />, label: 'Documents', path: '/dashboard/documents' },
     { icon: <Shield size={20} />, label: 'Security', path: '/dashboard/security' },
@@ -32,6 +38,7 @@ const MENU_ITEMS = [
 const Sidebar = ({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean, setIsCollapsed: (val: boolean) => void }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { signOut } = useClerk();
 
     return (
         <motion.aside
@@ -40,7 +47,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean, setIsC
             className="hidden lg:flex flex-col h-screen bg-[var(--surface)]/80 backdrop-blur-[20px] border-r border-white/5 sticky top-0 left-0 z-50 overflow-hidden"
         >
             {/* Sidebar Header - Logo */}
-            <div className="h-[72px] flex items-center px-6 gap-3 border-b border-[var(--border-subtle)] shrink-0">
+            <button onClick={() => navigate('/')} className="h-[72px] flex items-center px-6 gap-3 border-b border-[var(--border-subtle)] shrink-0 hover:bg-[var(--surface-muted)] transition-colors w-full text-left cursor-pointer">
                 <div className="min-w-[32px] w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
                     <div className="w-4 h-4 bg-[var(--surface)] rounded-sm rotate-45" />
                 </div>
@@ -53,7 +60,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean, setIsC
                         Finova
                     </motion.span>
                 )}
-            </div>
+            </button>
 
             {/* Navigation */}
             <nav className="flex-1 py-8 px-3 space-y-2 overflow-y-auto no-scrollbar">
@@ -104,7 +111,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean, setIsC
                 </button>
 
                 <button
-                    onClick={() => navigate('/login')}
+                    onClick={() => signOut({ redirectUrl: '/' })}
                     className="w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-red-50 text-red-500 transition-colors"
                 >
                     <LogOut size={20} />
@@ -116,6 +123,9 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean, setIsC
 };
 
 const Header = () => {
+    const navigate = useNavigate();
+    const { user } = useUser();
+
     return (
         <header className="fixed top-0 right-0 left-0 md:left-64 h-20 bg-[var(--surface)]/50 backdrop-blur-[20px] border-b border-white/5 z-30 px-8 flex items-center justify-between transition-colors duration-400">
             <div className="flex items-center gap-4 flex-1">
@@ -130,21 +140,37 @@ const Header = () => {
             </div>
 
             <div className="flex items-center gap-6">
-                <ThemeToggle />
-                <button className="relative p-2 text-text-secondary hover:text-text-primary transition-colors">
+                <div className="flex items-center gap-2 border-r border-[var(--border-subtle)] pr-6">
+                    <button onClick={() => navigate('/')} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--surface-muted)] text-text-secondary hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted-active)] transition-colors border border-[var(--border-subtle)] text-sm font-bold">
+                        <ChevronLeft size={16} />
+                        <span className="hidden sm:inline">Home</span>
+                    </button>
+                    <CurrencySelector />
+                    <ThemeToggle />
+                </div>
+                <button onClick={() => toast("No new notifications")} className="relative p-2 text-text-secondary hover:text-text-primary transition-colors">
                     <Bell size={20} />
                     <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-[var(--surface)]" />
                 </button>
 
-                <div className="flex items-center gap-3 pl-6 border-l border-[var(--border-subtle)]">
-                    <div className="text-right hidden sm:block">
-                        <div className="text-sm font-bold text-[var(--text-primary)]">Alex Sterling</div>
-                        <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider">Pro Member</div>
+                <SignedIn>
+                    <div className="flex items-center gap-3 pl-6 border-l border-[var(--border-subtle)]">
+                        <div className="text-right hidden sm:block">
+                            <div className="text-sm font-bold text-[var(--text-primary)]">{user?.fullName || "Pro User"}</div>
+                            <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider">Pro Member</div>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-[var(--surface-muted)] border-2 border-[var(--surface)] shadow-sm flex items-center justify-center transition-opacity shrink-0">
+                            <UserButton
+                                appearance={{
+                                    elements: {
+                                        userButtonAvatarBox: "w-10 h-10 border-none",
+                                        userButtonPopoverCard: "shadow-premium rounded-2xl border border-[var(--border)]"
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
-                    <div className="w-10 h-10 rounded-full bg-[var(--surface-muted)] border-2 border-[var(--surface)] shadow-sm overflow-hidden flex items-center justify-center">
-                        <User className="text-text-secondary" />
-                    </div>
-                </div>
+                </SignedIn>
             </div>
         </header>
     );

@@ -3,6 +3,8 @@ import { Search, Bell, Menu, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import { CurrencySelector } from '../common/CurrencySelector';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -51,9 +53,18 @@ const Navbar = () => {
 
                 {/* CTAs */}
                 <div className="flex items-center gap-4">
+                    <CurrencySelector />
                     <ThemeToggle />
-                    <button onClick={() => navigate('/login')} className="text-sm font-semibold text-text-primary hover:text-primary transition-colors hidden sm:block">Log In</button>
-                    <button onClick={() => navigate('/signup')} className="btn-primary py-2 px-5 text-sm">Join Finova</button>
+                    <SignedOut>
+                        <button onClick={() => navigate('/login')} className="text-sm font-semibold text-text-primary hover:text-primary transition-colors hidden sm:block">Log In</button>
+                        <button onClick={() => navigate('/signup')} className="btn-primary py-2 px-5 text-sm">Join Finova</button>
+                    </SignedOut>
+                    <SignedIn>
+                        <button onClick={() => navigate('/dashboard')} className="btn-primary py-2 px-5 text-sm">Dashboard</button>
+                        <div className="flex items-center">
+                            <UserButton />
+                        </div>
+                    </SignedIn>
                     <button className="md:hidden p-2 text-text-primary">
                         <Menu className="w-6 h-6" />
                     </button>

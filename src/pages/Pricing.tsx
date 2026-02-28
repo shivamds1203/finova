@@ -4,10 +4,13 @@ import { Check, Zap, Crown, Shield, ArrowRight } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 
 import { useNavigate } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { useCurrency } from '../providers/CurrencyContext';
 
 const Pricing = () => {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
     const navigate = useNavigate();
+    const { formatCurrency } = useCurrency();
 
     const tiers = [
         {
@@ -110,7 +113,7 @@ const Pricing = () => {
                             </p>
 
                             <div className="flex items-baseline gap-1 mb-10">
-                                <span className="text-4xl font-black tracking-tight">${tier.price}</span>
+                                <span className="text-4xl font-black tracking-tight">{formatCurrency(Number(tier.price))}</span>
                                 <span className={`text-sm font-bold opacity-60`}>/{billingCycle === 'monthly' ? 'mo' : 'yr'}</span>
                             </div>
 
@@ -125,16 +128,30 @@ const Pricing = () => {
                                 ))}
                             </ul>
 
-                            <button
-                                onClick={() => navigate('/signup')}
-                                className={`
-                                w-full py-5 rounded-3xl text-sm font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 group
-                                border
-                                ${tier.popular ? 'bg-[var(--background)] text-[var(--text-primary)] hover:bg-[var(--surface-muted)]' : 'bg-[var(--text-primary)] text-[var(--background)] hover:opacity-90 shadow-xl'}
-                            `}>
-                                {tier.cta}
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            <SignedOut>
+                                <button
+                                    onClick={() => navigate('/signup')}
+                                    className={`
+                                    w-full py-5 rounded-3xl text-sm font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 group
+                                    border
+                                    ${tier.popular ? 'bg-[var(--background)] text-[var(--text-primary)] hover:bg-[var(--surface-muted)]' : 'bg-[var(--text-primary)] text-[var(--background)] hover:opacity-90 shadow-xl'}
+                                `}>
+                                    {tier.cta}
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                            </SignedOut>
+                            <SignedIn>
+                                <button
+                                    onClick={() => navigate('/dashboard')}
+                                    className={`
+                                    w-full py-5 rounded-3xl text-sm font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 group
+                                    border
+                                    ${tier.popular ? 'bg-[var(--background)] text-[var(--text-primary)] hover:bg-[var(--surface-muted)]' : 'bg-[var(--text-primary)] text-[var(--background)] hover:opacity-90 shadow-xl'}
+                                `}>
+                                    Go to Dashboard
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                            </SignedIn>
                         </motion.div>
                     ))}
                 </div>

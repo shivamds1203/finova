@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FolderOpen, Search, Filter } from 'lucide-react';
+import { FolderOpen, Search, Filter, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import UploadZone from '../components/documents/UploadZone';
 import FileCard from '../components/documents/FileCard';
 import DocumentPreview from '../components/documents/DocumentPreview';
 import { FileMetadata } from '../services/uploadService';
 import { getUploadedFiles } from '../services/cloudStorage';
 import { parseDocumentData, ParsedDocumentResult } from '../services/pdfParser';
-import Navbar from '../components/layout/Navbar';
-import MainLayout from '../components/layout/MainLayout';
+import toast from 'react-hot-toast';
 
 const Documents = () => {
+    const navigate = useNavigate();
     const [files, setFiles] = useState<FileMetadata[]>([]);
     const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
     const [parsedData, setParsedData] = useState<ParsedDocumentResult | null>(null);
@@ -51,7 +52,7 @@ const Documents = () => {
     };
 
     return (
-        <MainLayout>
+        <div className="relative min-h-screen">
             {/* Geometric Background Overlay */}
             <div
                 className="fixed inset-0 z-0 opacity-20 pointer-events-none mix-blend-multiply dark:mix-blend-screen"
@@ -68,6 +69,12 @@ const Documents = () => {
                 {/* Header Area */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className="flex items-center gap-2 text-text-secondary hover:text-[var(--text-primary)] transition-colors mb-4 text-sm font-bold"
+                        >
+                            <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                        </button>
                         <div className="flex items-center gap-2 mb-2">
                             <span className="px-2 py-0.5 rounded-md bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest">Document Intelligence module</span>
                         </div>
@@ -103,7 +110,7 @@ const Documents = () => {
                                     className="pl-9 pr-4 py-2 bg-[var(--surface-muted)]/50 backdrop-blur-md border border-white/10 rounded-[12px] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 w-64 text-[var(--text-primary)] transition-all"
                                 />
                             </div>
-                            <button className="w-10 h-10 rounded-[12px] bg-[var(--surface-muted)]/50 backdrop-blur-md border border-white/10 hover:border-blue-500/50 flex items-center justify-center transition-all text-text-secondary">
+                            <button onClick={() => toast('Filters coming soon')} className="w-10 h-10 rounded-[12px] bg-[var(--surface-muted)]/50 backdrop-blur-md border border-white/10 hover:border-blue-500/50 flex items-center justify-center transition-all text-text-secondary">
                                 <Filter className="w-4 h-4" />
                             </button>
                         </div>
@@ -150,7 +157,7 @@ const Documents = () => {
                     />
                 )}
             </AnimatePresence>
-        </MainLayout>
+        </div>
     );
 };
 

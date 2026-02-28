@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, MoreVertical } from 'lucide-react';
+import { useCurrency } from '../../providers/CurrencyContext';
 
 const STOCKS = [
     { name: 'Apple Inc.', symbol: 'AAPL', price: 182.63, change: '+1.24%', trend: 'up', data: [170, 175, 172, 178, 180, 182] },
@@ -10,6 +11,7 @@ const STOCKS = [
 ];
 
 const InvestmentPortfolio = () => {
+    const { formatCurrency } = useCurrency();
     return (
         <div className="card-premium h-full overflow-hidden flex flex-col">
             <div className="p-8 border-b border-[var(--border-subtle)] flex items-center justify-between">
@@ -52,7 +54,7 @@ const InvestmentPortfolio = () => {
                                     </div>
                                 </td>
                                 <td className="px-8 py-6">
-                                    <div className="text-sm font-bold text-text-primary">${stock.price.toLocaleString()}</div>
+                                    <div className="text-sm font-bold text-text-primary">{formatCurrency(stock.price)}</div>
                                 </td>
                                 <td className="px-8 py-6">
                                     <div className={`flex items-center gap-1 text-sm font-bold ${stock.trend === 'up' ? 'text-green-600' : 'text-red-500'}`}>

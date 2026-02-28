@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import { Shield, Lock, EyeOff, Key, Smartphone, ChevronRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Shield, Lock, EyeOff, Key, Smartphone, ChevronRight, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const SECURITY_STATS = [
     { label: 'Encryption Standard', value: 'AES-256', sub: 'Military Grade' },
@@ -8,6 +10,7 @@ const SECURITY_STATS = [
 ];
 
 const Security = () => {
+    const navigate = useNavigate();
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -16,6 +19,12 @@ const Security = () => {
         >
             {/* Header */}
             <div>
+                <button
+                    onClick={() => navigate('/dashboard')}
+                    className="flex items-center gap-2 text-text-secondary hover:text-[var(--text-primary)] transition-colors mb-4 text-sm font-bold"
+                >
+                    <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                </button>
                 <h1 className="text-4xl font-black text-[var(--text-primary)] tracking-tight">Security Vault</h1>
                 <p className="text-text-secondary font-medium mt-1">Your data is secured with enterprise-level biometric and cryptographic standards.</p>
             </div>
@@ -62,7 +71,7 @@ const Security = () => {
                                     <div className="text-[10px] text-text-secondary font-bold uppercase tracking-widest">Rotated 2 days ago</div>
                                 </div>
                             </div>
-                            <button className="text-xs font-black uppercase tracking-widest text-primary hover:underline">Revoke</button>
+                            <button onClick={() => toast.success('Key revoked successfully')} className="text-xs font-black uppercase tracking-widest text-primary hover:underline">Revoke</button>
                         </div>
 
                         <div className="p-5 bg-[var(--background)] rounded-2xl border-2 border-[var(--border)] flex items-center justify-between">

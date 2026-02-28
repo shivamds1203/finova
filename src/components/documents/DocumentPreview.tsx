@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { X, Calendar, DollarSign, TrendingUp, TrendingDown, Target, Zap } from 'lucide-react';
 import { FileMetadata } from '../../services/uploadService';
 import { ParsedDocumentResult } from '../../services/pdfParser';
-
+import { useCurrency } from '../../providers/CurrencyContext';
 import { useState } from 'react';
 
 interface DocumentPreviewProps {
@@ -13,6 +13,7 @@ interface DocumentPreviewProps {
 
 const DocumentPreview = ({ file, parsedData, onClose }: DocumentPreviewProps) => {
     const [activeTab, setActiveTab] = useState<'analysis' | 'document'>('analysis');
+    const { formatCurrency } = useCurrency();
 
 
     return (
@@ -140,7 +141,7 @@ const DocumentPreview = ({ file, parsedData, onClose }: DocumentPreviewProps) =>
                                                             <td className="px-6 py-4 text-sm font-black text-slate-900">{asset.assetName}</td>
                                                             <td className="px-6 py-4 text-xs font-bold text-slate-500">{asset.symbol}</td>
                                                             <td className="px-6 py-4 text-sm font-black text-slate-900 text-right">
-                                                                ${asset.currentValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                                                {formatCurrency(asset.currentValue)}
                                                             </td>
                                                             <td className="px-6 py-4 text-right">
                                                                 <span className={`text-xs font-bold flex items-center justify-end gap-1 ${asset.returnsPercentage >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
@@ -155,7 +156,7 @@ const DocumentPreview = ({ file, parsedData, onClose }: DocumentPreviewProps) =>
                                                     <tr>
                                                         <td colSpan={2} className="px-6 py-4 text-sm font-black text-slate-900 uppercase tracking-widest">Total Identified Value</td>
                                                         <td colSpan={2} className="px-6 py-4 text-lg font-black text-slate-900 text-right">
-                                                            ${parsedData.extractedData.reduce((acc, curr) => acc + curr.currentValue, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                                            {formatCurrency(parsedData.extractedData.reduce((acc, curr) => acc + curr.currentValue, 0))}
                                                         </td>
                                                     </tr>
                                                 </tfoot>

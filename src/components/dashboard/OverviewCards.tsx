@@ -1,8 +1,10 @@
 import { motion, useSpring, useTransform, animate } from 'framer-motion';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Wallet, CreditCard } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useCurrency } from '../../providers/CurrencyContext';
 
-const AnimatedNumber = ({ value, prefix = "", suffix = "" }: { value: number, prefix?: string, suffix?: string }) => {
+const AnimatedNumber = ({ value }: { value: number }) => {
+    const { formatCurrency } = useCurrency();
     const [displayValue, setDisplayValue] = useState(value);
 
     useEffect(() => {
@@ -15,12 +17,7 @@ const AnimatedNumber = ({ value, prefix = "", suffix = "" }: { value: number, pr
     }, [value]);
 
     return (
-        <span>
-            {prefix}{displayValue.toLocaleString(undefined, {
-                minimumFractionDigits: value % 1 !== 0 ? 2 : 0,
-                maximumFractionDigits: 2
-            })}{suffix}
-        </span>
+        <span>{formatCurrency(displayValue)}</span>
     );
 };
 
@@ -89,10 +86,7 @@ const OverviewCards = () => {
                             {card.title}
                         </p>
                         <h3 className="text-3xl font-black text-text-primary tracking-tight">
-                            <AnimatedNumber
-                                value={card.value}
-                                prefix={card.title === "Credit Card Score" ? "" : "$"}
-                            />
+                            <AnimatedNumber value={card.value} />
                         </h3>
                     </div>
 

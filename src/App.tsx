@@ -5,17 +5,23 @@ import MainLayout from './components/layout/MainLayout';
 import CustomCursor from './components/common/CustomCursor';
 import CommandPalette from './components/common/CommandPalette';
 import ToastSystem from './components/common/ToastSystem';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import Auth from './pages/Login'; // Now serves as Auth component
 import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
 import Pricing from './pages/Pricing';
 import Investments from './pages/Investments';
 import Security from './pages/Security';
 import Documents from './pages/Documents';
+import Expenses from './pages/Expenses';
+import Analytics from './pages/Analytics';
+import Settings from './pages/Settings';
+import Wallet from './pages/Wallet';
+import Credit from './pages/Credit';
 import { ThemeProvider } from './providers/ThemeProvider';
+import { CurrencyProvider } from './providers/CurrencyContext';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SignedIn, SignedOut, AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
     <motion.div
@@ -50,27 +56,37 @@ const AnimatedRoutes = () => {
         <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-                <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+                <Route path="/login" element={<PageTransition><Auth initialMode="login" /></PageTransition>} />
+                <Route path="/signup" element={<PageTransition><Auth initialMode="signup" /></PageTransition>} />
+                <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} />
                 <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
                 <Route path="/security" element={<PageTransition><div className="min-h-screen"><Navbar /><Security /></div></PageTransition>} />
                 <Route
                     path="/dashboard/*"
                     element={
-                        <MainLayout>
-                            <PageTransition>
-                                <Routes>
-                                    <Route path="/" element={<Dashboard />} />
-                                    <Route path="expenses" element={<div>Expenses Page Coming Soon</div>} />
-                                    <Route path="investments" element={<Investments />} />
-                                    <Route path="analytics" element={<div>Analytics Page Coming Soon</div>} />
-                                    <Route path="reports" element={<Reports />} />
-                                    <Route path="settings" element={<div>Settings Page Coming Soon</div>} />
-                                    <Route path="security" element={<Security />} />
-                                    <Route path="documents" element={<Documents />} />
-                                </Routes>
-                            </PageTransition>
-                        </MainLayout>
+                        <>
+                            <SignedIn>
+                                <MainLayout>
+                                    <PageTransition>
+                                        <Routes>
+                                            <Route path="/" element={<Dashboard />} />
+                                            <Route path="expenses" element={<Expenses />} />
+                                            <Route path="investments" element={<Investments />} />
+                                            <Route path="analytics" element={<Analytics />} />
+                                            <Route path="reports" element={<Reports />} />
+                                            <Route path="settings" element={<Settings />} />
+                                            <Route path="security" element={<Security />} />
+                                            <Route path="documents" element={<Documents />} />
+                                            <Route path="wallet" element={<Wallet />} />
+                                            <Route path="credit" element={<Credit />} />
+                                        </Routes>
+                                    </PageTransition>
+                                </MainLayout>
+                            </SignedIn>
+                            <SignedOut>
+                                <Navigate to="/login" replace />
+                            </SignedOut>
+                        </>
                     }
                 />
                 <Route path="*" element={<Navigate to="/" replace />} />
@@ -82,12 +98,14 @@ const AnimatedRoutes = () => {
 function App() {
     return (
         <ThemeProvider defaultTheme="light" storageKey="finova-theme">
-            <Router>
-                <CustomCursor />
-                <CommandPalette />
-                <ToastSystem />
-                <AnimatedRoutes />
-            </Router>
+            <CurrencyProvider>
+                <Router>
+                    <CustomCursor />
+                    <CommandPalette />
+                    <ToastSystem />
+                    <AnimatedRoutes />
+                </Router>
+            </CurrencyProvider>
         </ThemeProvider>
     );
 }

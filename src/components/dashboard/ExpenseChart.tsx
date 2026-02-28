@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
 import { TrendingUp, Activity, Sparkles } from 'lucide-react';
+import { useCurrency } from '../../providers/CurrencyContext';
 
 const DATA = [
     { name: 'Jan', expense: 2100, income: 4500 },
@@ -12,7 +13,7 @@ const DATA = [
     { name: 'Jun', expense: 3500, income: 5500 },
 ];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label, formatCurrency }: any) => {
     if (active && payload && payload.length) {
         return (
             <motion.div
@@ -28,7 +29,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.color }} />
                                 {item.name}
                             </span>
-                            <span className="text-sm font-black">${item.value.toLocaleString()}</span>
+                            <span className="text-sm font-black">{formatCurrency(item.value)}</span>
                         </div>
                     ))}
                 </div>
@@ -40,6 +41,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const ExpenseChart = () => {
     const [filter, setFilter] = useState('Monthly');
+    const { formatCurrency } = useCurrency();
 
     return (
         <div className="card-premium p-8 h-[450px] flex flex-col group overflow-visible relative">
@@ -103,10 +105,10 @@ const ExpenseChart = () => {
                             axisLine={false}
                             tickLine={false}
                             tick={{ fill: 'var(--text-secondary)', fontSize: 10, fontWeight: 800 }}
-                            tickFormatter={(value) => `$${value}`}
+                            tickFormatter={(value) => formatCurrency(value)}
                         />
                         <Tooltip
-                            content={<CustomTooltip />}
+                            content={<CustomTooltip formatCurrency={formatCurrency} />}
                             cursor={{ stroke: 'var(--border)', strokeWidth: 1, strokeDasharray: '4 4' }}
                         />
                         <Area
