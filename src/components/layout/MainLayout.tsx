@@ -48,7 +48,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean, setIsC
         >
             {/* Sidebar Header - Logo */}
             <button onClick={() => navigate('/')} className="h-[72px] flex items-center px-6 gap-3 border-b border-[var(--border-subtle)] shrink-0 hover:bg-[var(--surface-muted)] transition-colors w-full text-left cursor-pointer">
-                <img src="/finova.jpeg" alt="Finova" className="min-w-[40px] w-10 h-10 rounded-xl object-cover shadow-sm shrink-0" />
+                <img src="/finova.jpeg" alt="Finova" className="w-[150px] h-auto rounded-xl object-contain shrink-0" />
                 {!isCollapsed && (
                     <motion.span
                         initial={{ opacity: 0 }}
