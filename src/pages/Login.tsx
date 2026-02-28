@@ -199,9 +199,9 @@ const Auth = ({ initialMode = 'login' }: { initialMode?: 'login' | 'signup' }) =
                                 <motion.div
                                     initial={{ y: -10 }}
                                     animate={{ y: 0 }}
-                                    className="inline-block p-4 rounded-3xl bg-primary/5 mb-6"
+                                    className="mb-6 flex justify-center"
                                 >
-                                    <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center text-white font-black text-xl">F</div>
+                                    <img src="/finovaa.png" alt="Finova" className="w-[180px] h-auto object-contain" />
                                 </motion.div>
                                 <h1 className="text-3xl font-black tracking-tight text-text-primary">Sign In</h1>
                                 <p className="text-text-secondary mt-2">Access your premium financial insights.</p>
@@ -329,8 +329,8 @@ const Auth = ({ initialMode = 'login' }: { initialMode?: 'login' | 'signup' }) =
                                 } ${!isFlipped ? 'pointer-events-none' : ''}`}
                         >
                             <div className="mb-8 text-center">
-                                <div className="inline-block p-4 rounded-3xl bg-primary/5 mb-6">
-                                    <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center text-white font-black text-xl">F</div>
+                                <div className="mb-6 flex justify-center">
+                                    <img src="/finovaa.png" alt="Finova" className="w-[180px] h-auto object-contain" />
                                 </div>
                                 <h1 className="text-3xl font-black tracking-tight text-text-primary">Create Account</h1>
                                 <p className="text-text-secondary mt-2">

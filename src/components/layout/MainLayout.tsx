@@ -125,8 +125,18 @@ const Header = () => {
     const { user } = useUser();
 
     return (
-        <header className="fixed top-0 right-0 left-0 md:left-64 h-20 bg-[var(--surface)]/50 backdrop-blur-[20px] border-b border-white/5 z-30 px-8 flex items-center justify-between transition-colors duration-400">
+        <header className="fixed top-0 right-0 left-0 lg:left-[260px] h-20 bg-[var(--surface)] border-b border-[var(--border-subtle)] md:bg-[var(--surface)]/50 md:backdrop-blur-[20px] z-30 px-4 sm:px-8 flex items-center justify-between transition-colors duration-400">
             <div className="flex items-center gap-4 flex-1">
+                {/* Mobile Logo */}
+                <div className="lg:hidden flex items-center">
+                    <img
+                        src="/finovaa.png"
+                        alt="Finova"
+                        className="w-[120px] h-auto object-contain cursor-pointer"
+                        onClick={() => navigate('/')}
+                    />
+                </div>
+                {/* Search */}
                 <div className="relative w-full max-w-md hidden sm:block">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
                     <input
