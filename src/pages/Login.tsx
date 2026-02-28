@@ -464,6 +464,14 @@ const Auth = ({ initialMode = 'login' }: { initialMode?: 'login' | 'signup' }) =
                                         </svg>
                                         <span className="text-sm">Apple</span>
                                     </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleSocialAuth('oauth_github')}
+                                        className="col-span-2 relative overflow-hidden group w-full py-4 border border-[var(--border)] rounded-full font-bold text-[var(--text-primary)] bg-[var(--surface-muted)] flex items-center justify-center gap-2 hover:bg-[var(--border-subtle)] shadow-sm transition-all"
+                                    >
+                                        <Github className="w-5 h-5" />
+                                        <span className="text-sm">Continue with GitHub</span>
+                                    </button>
                                 </div>
                                 <p className="text-center text-sm text-text-secondary font-medium">
                                     Already have an account? <button type="button" onClick={(e) => toggleFlip(e, '/login')} className="text-primary font-bold hover:underline cursor-pointer">Log in</button>
